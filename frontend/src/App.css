@@ -1,0 +1,23 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.count {
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+.button-wrapper {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.button {
+  padding: 8px;
+  font-size: large;
+}

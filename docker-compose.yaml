@@ -2,9 +2,7 @@ version: '3.1'
 
 services:
   counter:
-    image: mycounter
-    build:
-      dockerfile: Dockerfile
+    build: backend
     ports:
      - "8080:8080"
   database:
@@ -13,3 +11,7 @@ services:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=admin
+  frontend:
+    build: frontend
+    ports:
+     - "8082:8082"
