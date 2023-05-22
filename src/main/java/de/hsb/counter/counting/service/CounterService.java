@@ -34,8 +34,8 @@ public class CounterService {
     public void reset() {
         CounterEntity currentValue = getCount();
         CounterEntity newValue = currentValue.toBuilder()
-//                .timeStamp(LocalDateTime.now())
-                .value(currentValue.getValue()-1)
+                .timeStamp(LocalDateTime.now())
+                .value(0)
                 .build();
         counterRepository.save(newValue);
     }
