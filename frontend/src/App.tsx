@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
-import './App.css'
+import { Button, ButtonGroup, Typography, Container, Alert } from '@mui/material'
+import { displayTimeStamp } from './utils'
 
 function App() {
   const [count, setCount] = useState(0)
   const [timeStamp, setTimeStamp] = useState('')
+  const [showSuccess, setShowSuccess] = useState(false)
 
   async function getCounter() {
     const response = await fetch('http://localhost:8080/count')
@@ -27,35 +29,43 @@ function App() {
     await fetch('http://localhost:8080/count/', {
       method: 'delete',
     })
-    getCounter()
-  }
-
-  function displayTimeStamp() {
-    const timeStampDate = new Date(timeStamp)
-    const timezoneOffset = Math.abs(timeStampDate.getTimezoneOffset())
-    timeStampDate.setMinutes(timeStampDate.getMinutes() + timezoneOffset)
-    const day = timeStampDate.getDate()
-    const month = timeStampDate.getMonth() + 1
-    const year = timeStampDate.getFullYear()
-    const hours = timeStampDate.getHours()
-    const minutes = timeStampDate.getMinutes()
-    const seconds = timeStampDate.getSeconds()
-    return `${day}.${month}.${year} | ${hours}:${minutes}:${seconds}`
+    await getCounter()
+    setShowSuccess(true)
+    setTimeout(() => {
+      setShowSuccess(false)
+    }, 3000)
   }
 
   return (
-    <div className='App'>
-      <span className='count'>{count}</span>
-      <span>{displayTimeStamp()}</span>
-      <div className='button-wrapper'>
-        <button className='button' onClick={incrementCounter}>
-          Count erhöhen
-        </button>
-        <button className='button' onClick={resetCounter}>
-          Count resetten
-        </button>
-      </div>
-    </div>
+    <Container
+      style={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Typography variant='h3' gutterBottom>
+        {count}
+      </Typography>
+      <Typography variant='h6' gutterBottom>
+        {displayTimeStamp(timeStamp)}
+      </Typography>
+      <ButtonGroup variant='contained' orientation='vertical'>
+        <Button variant='contained' onClick={incrementCounter}>
+          Zähler erhöhen
+        </Button>
+        <Button variant='contained' onClick={resetCounter}>
+          Zähler zurücksetzen
+        </Button>
+      </ButtonGroup>
+      {showSuccess && (
+        <Alert security='success' variant='outlined' style={{ marginTop: 16 }}>
+          Der Zähler wurde erfolgreich zurückgesetzt!
+        </Alert>
+      )}
+    </Container>
   )
 }
 
