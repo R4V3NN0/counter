@@ -6,6 +6,7 @@ function App() {
   const [count, setCount] = useState(0)
   const [timeStamp, setTimeStamp] = useState('')
   const [showSuccess, setShowSuccess] = useState(false)
+  const [decrementable, setDecrementable] = useState(false)
 
   async function getCounter() {
     const response = await fetch('http://localhost:8080/count')
@@ -20,6 +21,18 @@ function App() {
 
   async function incrementCounter() {
     await fetch('http://localhost:8080/count/', {
+      method: 'post',
+    })
+    getCounter()
+    setDecrementable(true)
+  }
+
+  async function decrementCounter() {
+    if (count <= 0) {
+      setDecrementable(false)
+      return
+    }
+    await fetch('http://localhost:8080/count/dec/', {
       method: 'post',
     })
     getCounter()
@@ -56,13 +69,21 @@ function App() {
         <Button variant='contained' onClick={incrementCounter}>
           Zähler erhöhen
         </Button>
+        <Button variant='contained' onClick={decrementCounter}>
+          Zähler dekrementieren
+        </Button>
         <Button variant='contained' onClick={resetCounter}>
           Zähler zurücksetzen
         </Button>
       </ButtonGroup>
       {showSuccess && (
-        <Alert security='success' variant='outlined' style={{ marginTop: 16 }}>
+        <Alert severity='success' variant='outlined' style={{ marginTop: 16 }}>
           Der Zähler wurde erfolgreich zurückgesetzt!
+        </Alert>
+      )}
+      {!decrementable && (
+        <Alert severity='error' variant='outlined' style={{ marginTop: 16 }}>
+          Der Zähler kann nicht unter 0!
         </Alert>
       )}
     </Container>

@@ -27,6 +27,11 @@ public class CounterController {
         counterService.increase();
     }
 
+    @PostMapping("/count/dec")
+    public void dec() {
+        counterService.decrease();
+    }
+
     @DeleteMapping("/count")
     public void del() {
         counterService.reset();

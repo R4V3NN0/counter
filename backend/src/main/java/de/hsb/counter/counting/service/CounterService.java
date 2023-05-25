@@ -31,6 +31,16 @@ public class CounterService {
         counterRepository.save(newValue);
     }
 
+        public void decrease() {
+        CounterEntity currentValue = getCount();
+        CounterEntity newValue = currentValue.toBuilder()
+                .timeStamp(LocalDateTime.now())
+                .value(currentValue.getValue()-1)
+                .build();
+        counterRepository.save(newValue);
+    }
+
+
     public void reset() {
         CounterEntity currentValue = getCount();
         CounterEntity newValue = currentValue.toBuilder()
